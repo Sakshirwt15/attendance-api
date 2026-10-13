@@ -23,8 +23,13 @@ On Windows PowerShell, set the variables with `$env:MONGO_URI="..."` instead of 
 - Logs of an employee that does not exist are ignored in analytics that need employee data.
 - Logs dated before an employee's `joined_on` are still counted in that employee's monthly totals. Working days start from `joined_on`.
 
-## Testing
-I tested it against a local MongoDB with my own sample data: edge cases (employee with no logs, mid-month joiner, overnight shift, weekend records, ties, half days), explain plans, parallel requests, and 100,000 records for speed.
+   ## Testing
+   `selfcheck.py` is my own test script. It needs a running MongoDB and `httpx` (`pip install httpx`).
+```bash
+   export MONGO_URI="mongodb://localhost:27017"
+   python selfcheck.py          # add --big to also test with 100,000 records
+```
+   It uses a separate database (`attendance_selfcheck`), seeds sample data with edge cases, compares each analytics endpoint with a plain Python calculation, and checks explain plans and parallel requests.
 
 ## Missing / limitations
 Nothing known is missing.
